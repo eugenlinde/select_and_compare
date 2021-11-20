@@ -1,0 +1,66 @@
+from tkinter import Tk     # from tkinter import Tk for Python 3.x
+from tkinter.filedialog import askopenfilename
+
+Tk().withdraw()
+filename = askopenfilename() 
+print(filename)
+
+import csv
+
+with open(filename, newline='') as f:
+    reader = csv.reader(f)
+    imageList = list(reader)
+
+from itertools import chain
+imageList = list(chain(*imageList))
+
+print(imageList)
+
+import time
+time.sleep(1)
+
+from tkinter import filedialog
+from tkinter import *
+root = Tk()
+root.withdraw()
+imageFolder = filedialog.askdirectory()
+print(imageFolder)
+
+from os import walk
+
+fileNames = next(walk(imageFolder), (None, None, []))[2]  # [] if no file
+print(fileNames)
+
+setOfImageList = set(imageList)
+setOfFileNames = set(fileNames)
+print (setOfImageList)
+print (setOfFileNames)
+
+unique1 = setOfImageList.difference(setOfFileNames)
+unique2 = setOfFileNames.difference(setOfImageList) 
+
+import ctypes  # An included library with Python install.
+def Mbox(title, text, style):
+    return ctypes.windll.user32.MessageBoxW(0, text, title, style)
+
+resultText1 = "Everything OK in folder"
+listStrings1 = ", ".join(unique1)
+resultText2 = "Everything OK in table"
+listStrings2 = ", ".join(unique2)
+
+if not unique1:
+    print (resultText1)
+else:
+    resultText1 = "could not find in folder:" + " " + listStrings1
+    print (resultText1)
+
+Mbox('Results', resultText1[:], 0)
+
+if not unique2:
+    print (resultText2)
+else:
+    resultText2 = "could not find in table:" + " " + listStrings2
+    print (resultText2)
+
+
+Mbox('Results', resultText2[:], 0)
